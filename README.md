@@ -9,3 +9,12 @@ $ node bff.js
 
 
 $ docker-compose up frontend zipkin
+
+
+Refs:
+
+https://opentelemetry.io/docs/
+
+
+
+https://github.com/open-telemetry/opentelemetry-js-api
