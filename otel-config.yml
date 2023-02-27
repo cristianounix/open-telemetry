@@ -1,0 +1,60 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: "collector:4317"
+      http:
+        endpoint: "collector:6831"
+  jaeger:
+    protocols:
+      grpc:
+      thrift_http:
+
+exporters:
+  logging:
+
+  zipkin:
+    endpoint: "http://zipkin:9411/api/v2/spans"
+    format: proto
+
+
+processors:
+    batch:
+      send_batch_size: 1000
+      timeout: 10s
+    # memory_limiter:
+    #   # Same as --mem-ballast-size-mib CLI argument
+    #   ballast_size_mib: 683
+    #   # 80% of maximum memory up to 2G
+    #   limit_mib: 1500
+    #   # 25% of limit up to 2G
+    #   spike_limit_mib: 512
+    #   check_interval: 5s
+
+extensions:
+    health_check: {}
+    zpages: {}
+  # health_check:
+  # pprof:
+  #   endpoint: :1888
+  # zpages:
+  #   endpoint: :55679
+
+service:
+  # extensions: [pprof, zpages, health_check]
+  # extensions: [zpages, health_check]
+  # pipelines:
+  #   traces:
+  #     receivers: [otlp]
+  #     processors: [batch]
+  #     exporters: [logging, zipkin, jaeger]
+  #   metrics:
+  #     receivers: [otlp]
+  #     processors: [batch]
+  #     exporters: [logging]
+  extensions: [health_check, zpages]
+  pipelines:
+    traces:
+      receivers: [jaeger, otlp]
+      processors: [batch]
+      exporters: [logging, zipkin]

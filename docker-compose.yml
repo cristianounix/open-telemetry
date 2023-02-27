@@ -1,0 +1,47 @@
+version: '3.1'
+
+services:
+
+  # Zipkin
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - 9411:9411
+
+  # Nginx
+  frontend:
+    image: nginx:latest
+    ports:
+      - 8082:80
+    volumes:
+      - ./services/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./services/src/index.html:/usr/share/nginx/html/index.html
+      - ./services/src/bundle.js:/usr/share/nginx/html/bundle.js
+
+  # # Collector
+  # collector:
+  #   # image: otel/opentelemetry-collector-contrib:0.23.0
+  #   image: otel/opentelemetry-collector-contrib:latest
+  #   # command: '--config /etc/otel-config.yaml'
+  #   command: ["--config=/etc/otel-config.yml"]
+  #   volumes:
+  #     - ./otel-config.yml:/etc/otel-config.yml
+  #   ports:
+  #     - 6831:6831
+  #     - 4317:4317   # OTLP gRPC receiver
+
+
+  bff:
+    build: 
+      context: ./services
+      dockerfile: Dockerfile.bff
+    ports:
+      - 8081:8081
+    
+  srv:
+    build: 
+      context: ./services
+      dockerfile: Dockerfile.srv
+    ports:
+      - 9000:9000
