@@ -1,0 +1,12 @@
+# Setting up Nginx
+FROM nginx:1.19.2-alpine
+
+# COPY --from=0 /home/app/client_docker/bundle.js /usr/share/nginx/html/
+# COPY --from=0 /home/app/client_docker/index.html /usr/share/nginx/html/
+
+COPY ./src/index.html /usr/share/nginx/html/
+COPY ./src/bundle.js /usr/share/nginx/html/
+
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
