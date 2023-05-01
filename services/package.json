@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo 'bla'",
-    "browserify": "browserify src/frontend.js -o src/bundle.js",
+    "build": "browserify src/frontend.js -o src/bundle.js",
     "start": "node --version",
     "start-bff": "node src/bff.js",
     "start-service": "node src/service.js"
