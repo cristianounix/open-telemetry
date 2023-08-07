@@ -10,6 +10,8 @@ $ node bff.js
 
 $ docker-compose up frontend zipkin
 
+http://localhost:8082/?debug
+http://localhost:9411/zipkin/
 
 Refs:
 
